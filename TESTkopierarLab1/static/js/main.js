@@ -1,6 +1,6 @@
 queue()
   .defer(d3.csv,'static/data/Swedish_Population_Statistics.csv')
-  .defer(d3.json,'static/maps/sverige.topojson')
+  .defer(d3.json,'static/maps/sverige-topo.json')
   .await(draw);
 
 var sp, pc, map;

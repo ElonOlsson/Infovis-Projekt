@@ -44,19 +44,20 @@ function map(data, world_map_json){
       .call(zoom);
 
   var g = svg.append("g");
+  
+  
+  var countries = topojson.feature(world_map_json,
+    world_map_json.objects.sverige).features;
 
-  console.log("geojson .properties: " + world_map_json);
-  var countries = topojson.feature(world_map_json,  //"geometries":[{"type":"Polygon","properties":{"KNKOD":"0114","KNNAMN":"Upplands Väsby"},"arcs":[[0,1,2,3,4,5]]}, ...
-        world_map_json.objects.properties).features;
 
-  var country = g.selectAll(".geometries").data(countries);
+  var country = g.selectAll(".region").data(countries);
 
   /*~~ Task 12  initialize color array ~~*/
   var cc = [];
   
 	data.forEach(function(d){
 		
-		cc[d["Country"]] = colorScheme(d["Country"]);
+		cc[d["region"]] = colorScheme(d["region"]);
 		
 	
 	});
