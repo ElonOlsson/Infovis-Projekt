@@ -108,14 +108,14 @@ function map(data, world_map_json){
     /*~~ Highlight countries when filtering in the other graphs~~*/
   this.selectCountry = function(value){
 	  
-		var country = d3.selectAll('.country');
+		var country = d3.selectAll('.regionen');
 			country.style('stroke', function(d){
 				
 				return value.every(function(v){
 			
-					return v.Country != d.properties.name ? "blue": null
+					return v.region != d.properties.KNName ? "red": null
 					
-			})? null : "blue" 
+			})? null : "red" 
 		});
 
   }
