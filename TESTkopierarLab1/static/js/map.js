@@ -14,8 +14,6 @@ function map(data, world_map_json){
             height = 500 - margin.top - margin.bottom;
 
   /*~~ Task 10  initialize color variable ~~*/
-  
-  
   var colorScheme = d3.scaleOrdinal(d3.schemeCategory20);
   
    //initialize zoom
@@ -32,8 +30,8 @@ function map(data, world_map_json){
   /*~~ Task 11  initialize projection and path variable ~~*/
   
   var projection = d3.geoMercator()
-	 .scale(120)
-	 .translate([width / 2, height / 2]);
+	 .scale(950)
+	 .translate([width / 2.8, height * 3.2]);
 	 
   var path = d3.geoPath()
       .projection(projection);
@@ -50,26 +48,25 @@ function map(data, world_map_json){
     world_map_json.objects.sverige).features;
 
 
-  var country = g.selectAll(".region").data(countries);
+  var country = g.selectAll(".sverige").data(countries);
 
   /*~~ Task 12  initialize color array ~~*/
   var cc = [];
   
 	data.forEach(function(d){
 		
-		cc[d["region"]] = colorScheme(d["region"]);
-		
+		cc[d["region"].match(/\d+/)] = colorScheme(d["region"]);
 	
-	});
-		
+  });
+  	
   country.enter().insert("path")
-      .attr("class", "country")
+      .attr("class", "region")
 
         /*~~ Task 11  add path variable as attr d here. ~~*/
       .attr("d", path)
-      .attr("id", function(d) { return d.id; })
-      .attr("title", function(d) { return d.properties.name; })
-      .style("fill", function(d) { return cc[d.properties.name]; })
+      .attr("id", function(d) { return d.properties.KNKOD; })
+      .attr("title", function(d) { return d.properties.KNNAMN; })
+      .style("fill", function(d) { return cc[d.properties.KNKOD]; })
 	  
 
       //tooltip
@@ -82,7 +79,7 @@ function map(data, world_map_json){
         var mouse = d3.mouse(svg.node()).map( function(d) { return parseInt(d); } );
         tooltip
         .attr("style", "left:"+(mouse[0]+30)+"px;top:"+(mouse[1]+30)+"px")
-        .html(d.properties.name);
+        .html(d.properties.KNNAMN);
       })
       .on("mouseout",  function(d) {
 
