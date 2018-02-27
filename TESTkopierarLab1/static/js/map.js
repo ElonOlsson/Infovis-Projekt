@@ -32,8 +32,8 @@ function map(data, world_map_json){
   /*~~ Task 11  initialize projection and path variable ~~*/
   
   var projection = d3.geoMercator()
-	 .scale(120)
-	 .translate([width / 2, height / 2]);
+	 .scale(950)
+	 .translate([width / 2.8, height *3.2]);
 	 
   var path = d3.geoPath()
       .projection(projection);
@@ -63,7 +63,7 @@ function map(data, world_map_json){
 	});
 		
   country.enter().insert("path")
-      .attr("class", "country")
+      .attr("class", "regionen")
 
         /*~~ Task 11  add path variable as attr d here. ~~*/
       .attr("d", path)
@@ -111,14 +111,14 @@ function map(data, world_map_json){
     /*~~ Highlight countries when filtering in the other graphs~~*/
   this.selectCountry = function(value){
 	  
-		var country = d3.selectAll('.country');
+		var country = d3.selectAll('.regionen');
 			country.style('stroke', function(d){
 				
 				return value.every(function(v){
 			
-					return v.Country != d.properties.name ? "blue": null
+					return v.region != d.properties.KNName ? "red": null
 					
-			})? null : "blue" 
+			})? null : "red" 
 		});
 
   }
