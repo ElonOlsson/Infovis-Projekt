@@ -238,7 +238,7 @@ function pc(data2014, data2010, data2006, data2002){
               name: "2014",
               scale: d3.scaleLinear().range([height, 0]),
               type: "number"
-            },
+            }
             
         ];
     }
