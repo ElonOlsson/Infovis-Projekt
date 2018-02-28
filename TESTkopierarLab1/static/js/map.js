@@ -14,7 +14,11 @@ function map(data, world_map_json){
             height = 500 - margin.top - margin.bottom;
 
   /*~~ Task 10  initialize color variable ~~*/
-  var colorScheme = d3.scaleOrdinal(d3.schemeCategory20c);
+  // Don't need no shitty colorscheme no more
+  //var colorScheme = d3.scaleOrdinal(d3.schemeCategory20c);
+
+  // The order of : Moderaterna, Centerpartiet, Folkpartiet, Kristdemokraterna, Miljöpartiet, Socialdemokraterna, Vänsterpartiet, Sverigedemokraterna, Övriga
+  var partyColors = ['#004b8d', '#51ba66', '#3d70a4', '#6d94bb', '#379c47', '#d82f27', '#b02327', '#e7e518', '#BDC3C7'];
   
    //initialize zoom
   var zoom = d3.zoom()
@@ -51,13 +55,13 @@ function map(data, world_map_json){
   var country = g.selectAll(".sverige").data(countries);
 
   /*~~ Task 12  initialize color array ~~*/
-  var cc = [];
-  
+  // Dont need this initialization no more
+  /*var cc = [];
 	data.forEach(function(d){
 		
 		cc[d["region"].match(/\d+/)] = colorScheme(d["region"]);
 	
-  });
+  }); */
   	
   country.enter().insert("path")
       .attr("class", "region")
@@ -66,7 +70,7 @@ function map(data, world_map_json){
       .attr("d", path)
       .attr("id", function(d) { return d.properties.KNKOD; })
       .attr("title", function(d) { return d.properties.KNNAMN; })
-      .style("fill", function(d) { return cc[d.properties.KNKOD]; })
+      .style("fill", function(d) { return partyColors[getColorIndex(d.properties.KNKOD)]; })
 	  
 
       //tooltip
@@ -103,6 +107,25 @@ function map(data, world_map_json){
   function move() {
       g.style("stroke-width", 1.5 / d3.event.transform.k + "px");
       g.attr("transform", d3.event.transform);
+  }
+
+  function getColorIndex(countyCode){
+    var largest = 0.0;
+    var counter = 0;
+    var index = 0;
+    for(var i = 0; i < data.length; i++)
+    {
+      if(data[i].region.match(/\d+/) == countyCode)
+      {
+        if(parseFloat(data[i].Year2014) > largest)
+        {
+          largest = data[i].Year2014;
+          index = counter;
+        }
+        counter++;
+      }
+    }
+    return index;
   }
 
     /*~~ Highlight countries when filtering in the other graphs~~*/
