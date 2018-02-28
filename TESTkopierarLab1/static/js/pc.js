@@ -2,9 +2,16 @@
   Created: Jan 14 2018
   Author: Kahin Akram Hassan
 */
-function pc(data){
+function pc(data2014, data2010, data2006, data2002){
 
-  this.data = data;
+  this.data2014 = data2014;
+  this.data2010 = data2010;
+  this.data2006 = data2006;
+  this.data2002 = data2002;
+
+  //active dataset 
+  var data = data2014;
+
   var div = '#pc-chart';
 
 //En overwiev av korelationen mellan koordinaterna
@@ -70,11 +77,11 @@ function pc(data){
 
 
     //Task 8 initialize color scale
-    var cc = [];
+  var cc = [];
 	var color = d3.scaleOrdinal(d3.schemeCategory20);
 	data.forEach(
 	function(d) {
-	cc[d["Country"]] = color(d["Country"]);
+	  cc[d["Country"]] = color(d["Country"]);
 	}
 	);	
 
@@ -208,60 +215,31 @@ function pc(data){
     function axesDims(height){
         return [
             {
-              name: "Country",
+              name: "Party",
               scale: d3.scaleBand().range([0, height]),
               type: "string"
             },
             {
-              name: "Household_income",
+              name: "2002",
               scale: d3.scaleLinear().range([0, height]),
               type: "number"
             },
             {
-              name: "Employment_rate",
+              name: "2006",
               scale: d3.scaleLinear().range([height, 0]),
               type: "number"
             },
             {
-              name: "Unemployment_rate",
+              name: "2010",
               scale: d3.scaleLinear().range([height, 0]),
               type: "number"
             },
             {
-              name: "Personal_earnings",
+              name: "2014",
               scale: d3.scaleLinear().range([height, 0]),
               type: "number"
             },
-            {
-              name: "Quality_of_support_network",
-              scale: d3.scaleLinear().range([height, 0]),
-              type: "number"
-            },
-            {
-              name: "Student_skills",
-              scale: d3.scaleLinear().range([height, 0]),
-              type: "number"
-            },
-            {
-              name: "Water_quality",
-              scale: d3.scaleLinear().range([height, 0]),
-              type: "number"
-            },
-            {
-              name: "Voter_turnout",
-              scale: d3.scaleLinear().range([height, 0]),
-              type: "number"
-            },
-            {
-              name: "Self_reported_health",
-              scale: d3.scaleLinear().range([height, 0]),
-              type: "number"
-            },
-            {
-              name: "Life_satisfaction",
-              scale: d3.scaleLinear().range([height, 0]),
-              type: "number"
-            },
+            
         ];
     }
 

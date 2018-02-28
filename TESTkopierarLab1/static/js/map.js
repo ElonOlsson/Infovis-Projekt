@@ -2,10 +2,14 @@
   Created: Jan 14 2018
   Author: Kahin Akram Hassan
 */
-function map(data, world_map_json){
+function map(data2014, data2010, data2006, data2002, sweden_map_json){
+  //constructor;
 
-  this.data = data;
-  this.world_map_json = world_map_json;
+  this.data2014 = data2014;
+  this.data2010 = data2010;
+  this.data2006 = data2006;
+  this.data2002 = data2002;
+  this.sweden_map_json = sweden_map_json;
 
   var div = '#world-map';
   var parentWidth = $(div).parent().width();
@@ -17,9 +21,9 @@ function map(data, world_map_json){
   var colorScheme = d3.scaleOrdinal(d3.schemeCategory20c);
   
    //initialize zoom
-  var zoom = d3.zoom()
-    .scaleExtent([1, 10])
-    .on('zoom', move);
+ // var zoom = d3.zoom()
+ //   .scaleExtent([1, 10])
+ //   .on('zoom', move);
 
   //initialize tooltip
   var tooltip = d3.select(div).append("div")
@@ -31,21 +35,21 @@ function map(data, world_map_json){
   
   var projection = d3.geoMercator()
 	 .scale(950)
-	 .translate([width / 2.8, height * 3.2]);
+	 .translate([width *-0.1, height * 3.2]);
 	 
   var path = d3.geoPath()
       .projection(projection);
 
   var svg = d3.select(div).append("svg")
       .attr("width", width)
-      .attr("height", height)
-      .call(zoom);
+      .attr("height", height);
+      //.call(zoom);
 
   var g = svg.append("g");
   
   
-  var countries = topojson.feature(world_map_json,
-    world_map_json.objects.sverige).features;
+  var countries = topojson.feature(sweden_map_json,
+    sweden_map_json.objects.sverige).features;
 
 
   var country = g.selectAll(".sverige").data(countries);
@@ -53,7 +57,7 @@ function map(data, world_map_json){
   /*~~ Task 12  initialize color array ~~*/
   var cc = [];
   
-	data.forEach(function(d){
+	data2014.forEach(function(d){
 		
 		cc[d["region"].match(/\d+/)] = colorScheme(d["region"]);
 	
