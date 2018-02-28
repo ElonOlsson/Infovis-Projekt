@@ -14,7 +14,7 @@ function map(data, world_map_json){
             height = 500 - margin.top - margin.bottom;
 
   /*~~ Task 10  initialize color variable ~~*/
-  var colorScheme = d3.scaleOrdinal(d3.schemeCategory20);
+  var colorScheme = d3.scaleOrdinal(d3.schemeCategory20c);
   
    //initialize zoom
   var zoom = d3.zoom()
