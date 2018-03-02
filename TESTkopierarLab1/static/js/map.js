@@ -118,17 +118,16 @@ function Map(activeData, sweden_map_json){
 
   // pseudo function för att updatera data.
   this.updateData = function (){  //dataSet as argument
-    console.log("nummer ett tack:" + country.);
     country.exit().remove();
-    console.log("nummer tvaou tack:" + country);
     // Lyckas vi inte att konvertera den nya datan från array till json, är jag inte säker på att indexeringen d.properties.KNKOD fungerar till exempel
+    var test = 0;
     country.enter().insert("path")
     .attr("class", "region")
     .attr("d", path)
     .attr("id", function(d) { return d.properties.KNKOD; })
     .attr("title", function(d) { return d.properties.KNNAMN; })
-    .style("fill", function(d) { return partyColors[getColorIndex(d.properties.KNKOD)]; })
-
+    .style("fill", function(d) { test+= getColorIndex(d.properties.KNKOD); return partyColors[getColorIndex(d.properties.KNKOD)]; })
+    console.log("test: "+test);
     // hoppas att funktionaliteten med "mousemove" och "mouseout" fortfarande fungerar, annars måste det kanske skickas med in här också
   }
 
