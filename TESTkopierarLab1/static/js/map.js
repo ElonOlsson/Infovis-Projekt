@@ -121,26 +121,26 @@ function Map(data2014, data2010, data2006, data2002, pcYear, sweden_map_json){
     // Lyckas vi inte att konvertera den nya datan från array till json, är jag inte säker på att indexeringen d.properties.KNKOD fungerar till exempel
 
     //change dataset with switch.
-    var sliderElement = document.getElementById("selected_year");
-    var datasetName = "data" + sliderElement.value;
-
-    switch(datasetName){
-      case "data2002":
+    switch(document.getElementById("selected_year").value){
+      case "2002":
         data = data2002;
         this.data = data;
-        console.log("this is now the data: " + data);
+        console.log("this is now the data: " + Object.keys(data[0])[0]);
         break;
-      case "data2006":
+      case "2006":
         data = data2006;
-        console.log("this is now the data: " + data);
+        this.data = data;
+        console.log("this is now the data: " + Object.keys(data[0])[2]);
         break;
-      case "data2010":
+      case "2010":
         data = data2010;
-        console.log("this is now the data: " + data);
+        this.data = data;
+        console.log("this is now the data: " + Object.keys(data[0])[0]);
         break;
-      case "data2014":
+      case "2014":
         data = data2014;
-        console.log("this is now the data: " + data);
+        this.data = data;
+        console.log("this is now the data: " + Object.keys(data[0])[2]);
         break;
     }
 
@@ -151,8 +151,32 @@ function Map(data2014, data2010, data2006, data2002, pcYear, sweden_map_json){
     .attr("id", function(d) { return d.properties.KNKOD; })
     .attr("title", function(d) { return d.properties.KNNAMN; })
     .style("fill", function(d) { test+= getColorIndex(d.properties.KNKOD); return partyColors[getColorIndex(d.properties.KNKOD)]; })
-    console.log("test: "+test);
     // hoppas att funktionaliteten med "mousemove" och "mouseout" fortfarande fungerar, annars måste det kanske skickas med in här också
+          //tooltip
+          .on("mousemove", function(d) {
+            d3.select(this).style('stroke','white');
+    
+            tooltip.transition()
+                .duration(200)
+                .style("opacity", .9);
+            var mouse = d3.mouse(svg.node()).map( function(d) { return parseInt(d); } );
+            tooltip
+            .attr("style", "left:"+(mouse[0]+30)+"px;top:"+(mouse[1]+30)+"px")
+            .html(d.properties.KNNAMN);
+          })
+          .on("mouseout",  function(d) {
+    
+              d3.select(this).style('stroke','none');
+              tooltip.transition()
+                  .duration(500)
+                  .style("opacity", 0);
+          })
+          //selection
+          .on("click",  function(d) {
+          // var countryObject = [{ "Country": d.properties.name}];
+          pc.selectLine(d);
+          sp.selectDots(d);
+          });
   }
 
   // Denna function returnerar ett index beroende på vilket parti som är mest röstat på i en kommun
@@ -160,13 +184,14 @@ function Map(data2014, data2010, data2006, data2002, pcYear, sweden_map_json){
   function getColorIndex(countyCode){
     var start = new Date().getTime();
     var key = Object.keys(data[0])[2];
+    var region = Object.keys(data[0])[0];
     var largest = 0.0;
     var counter = 0;
     var index = 0;
 
     for(var i = 0; i < data.length; i++)
     {
-      if(data[i].region.match(/\d+/) == countyCode)   //Object.keys(data[0])[0].match(/\d+/)
+      if(data[i][region].match(/\d+/) == countyCode)   //Object.keys(data[0])[0].match(/\d+/)
       {
         if(parseFloat(data[i][key]) > largest)
         {
