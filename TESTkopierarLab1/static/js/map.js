@@ -125,7 +125,7 @@ function Map(data2014, data2010, data2006, data2002, pcYear, sweden_map_json){
       case "2002":
         data = data2002;
         this.data = data;
-        console.log("this is now the data: " + Object.keys(data[0])[0]);
+        console.log("this is now the data: " + Object.keys(data[0])[2]);
         break;
       case "2006":
         data = data2006;
@@ -135,7 +135,7 @@ function Map(data2014, data2010, data2006, data2002, pcYear, sweden_map_json){
       case "2010":
         data = data2010;
         this.data = data;
-        console.log("this is now the data: " + Object.keys(data[0])[0]);
+        console.log("this is now the data: " + Object.keys(data[0])[2]);
         break;
       case "2014":
         data = data2014;
