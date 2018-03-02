@@ -12,7 +12,8 @@ function map(data2014, data2010, data2006, data2002, sweden_map_json){
   this.sweden_map_json = sweden_map_json;
 
   //active dataset
-  var data = data2014;
+  var data = data2002;
+  var time = 0;
 
   var div = '#world-map';
   var parentWidth = $(div).parent().width();
@@ -28,9 +29,9 @@ function map(data2014, data2010, data2006, data2002, sweden_map_json){
   var partyColors = ['#004b8d', '#51ba66', '#3d70a4', '#6d94bb', '#379c47', '#d82f27', '#b02327', '#e7e518', '#BDC3C7'];
   
    //initialize zoom
- // var zoom = d3.zoom()
- //   .scaleExtent([1, 10])
- //   .on('zoom', move);
+   var zoom = d3.zoom()
+    .scaleExtent([1, 10])
+    .on('zoom', move);
 
   //initialize tooltip
   var tooltip = d3.select(div).append("div")
@@ -39,7 +40,6 @@ function map(data2014, data2010, data2006, data2002, sweden_map_json){
 
 
   /*~~ Task 11  initialize projection and path variable ~~*/
-  
   var projection = d3.geoMercator()
 	 .scale(950)
 	 .translate([width *-0.1, height * 3.2]);
@@ -49,8 +49,8 @@ function map(data2014, data2010, data2006, data2002, sweden_map_json){
 
   var svg = d3.select(div).append("svg")
       .attr("width", width)
-      .attr("height", height);
-      //.call(zoom);
+      .attr("height", height)
+      .call(zoom);
 
   var g = svg.append("g");
   
@@ -79,7 +79,6 @@ function map(data2014, data2010, data2006, data2002, sweden_map_json){
       .attr("title", function(d) { return d.properties.KNNAMN; })
       .style("fill", function(d) { return partyColors[getColorIndex(d.properties.KNKOD)]; })
 	  
-
       //tooltip
       .on("mousemove", function(d) {
         d3.select(this).style('stroke','white');
@@ -99,16 +98,11 @@ function map(data2014, data2010, data2006, data2002, sweden_map_json){
               .duration(500)
               .style("opacity", 0);
       })
-
       //selection
       .on("click",  function(d) {
-	
 			// var countryObject = [{ "Country": d.properties.name}];
-		  
 			pc.selectLine(d);
 			sp.selectDots(d);
-		  
-		
       });
 
   function move() {
@@ -116,7 +110,26 @@ function map(data2014, data2010, data2006, data2002, sweden_map_json){
       g.attr("transform", d3.event.transform);
   }
 
+  // pseudo function för att updatera data.
+  function updateData(dataSet){
+    country.exit().remove();
+
+    // Lyckas vi inte att konvertera den nya datan från array till json, är jag inte säker på att indexeringen d.properties.KNKOD fungerar till exempel
+    country.enter().insert("path")
+    .attr("class", "region")
+    .attr("d", path)
+    .attr("id", function(d) { return d.properties.KNKOD; })
+    .attr("title", function(d) { return d.properties.KNNAMN; })
+    .style("fill", function(d) { return partyColors[getColorIndex(d.properties.KNKOD)]; })
+
+    // hoppas att funktionaliteten med "mousemove" och "mouseout" fortfarande fungerar, annars måste det kanske skickas med in här också
+  }
+
+  // Denna function returnerar ett index beroende på vilket parti som är mest röstat på i en kommun
+  // Timar också hur lång tid den tar att exekevera
   function getColorIndex(countyCode){
+    var start = new Date().getTime();
+    var key = Object.keys(data[0])[2];
     var largest = 0.0;
     var counter = 0;
     var index = 0;
@@ -124,16 +137,19 @@ function map(data2014, data2010, data2006, data2002, sweden_map_json){
     {
       if(data[i].region.match(/\d+/) == countyCode)
       {
-        if(parseFloat(data[i].Year2014) > largest)
+        if(parseFloat(data[i][key]) > largest)
         {
-          largest = data[i].Year2014;
+          largest = data[i][key];
           index = counter;
         }
         counter++;
       }
     }
-    return index;
+    var end = new Date().getTime();
+    time = time + (end - start);
+    return index; 
   }
+  
 
     /*~~ Highlight countries when filtering in the other graphs~~*/
   this.selectCountry = function(value){
@@ -149,5 +165,6 @@ function map(data2014, data2010, data2006, data2002, sweden_map_json){
 		});
 
   }
+  console.log('Execution time: ' + time);
 
 }
