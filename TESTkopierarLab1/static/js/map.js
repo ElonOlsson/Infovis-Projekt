@@ -83,7 +83,7 @@ function Map(activeData, sweden_map_json){
       .attr("d", path)
       .attr("id", function(d) { return d.properties.KNKOD; })
       .attr("title", function(d) { return d.properties.KNNAMN; })
-      .style("fill", function(d) { return partyColors[getColorIndex(d.properties.KNKOD)]; })
+      .style("fill", function(d) { return partyColors[getColorIndex(d.properties.KNKOD)]; })    //colormapping
 	  
       //tooltip
       .on("mousemove", function(d) {
@@ -117,9 +117,10 @@ function Map(activeData, sweden_map_json){
   }
 
   // pseudo function för att updatera data.
-  function updateData(){  //dataSet as argument
+  this.updateData = function (){  //dataSet as argument
+    console.log("nummer ett tack:" + country.);
     country.exit().remove();
-
+    console.log("nummer tvaou tack:" + country);
     // Lyckas vi inte att konvertera den nya datan från array till json, är jag inte säker på att indexeringen d.properties.KNKOD fungerar till exempel
     country.enter().insert("path")
     .attr("class", "region")
