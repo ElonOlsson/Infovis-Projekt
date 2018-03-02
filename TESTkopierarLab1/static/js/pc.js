@@ -26,13 +26,13 @@ function pc(data){
   //dimensions for the axes.
   //Caution: Attributes in the function needs to be changed if data file is changed
   var dimensions = axesDims(height);
-console.log("Dimensions 1: " + dimensions[0].name);
+//console.log("Dimensions 1: " + dimensions[0].name);
   dimensions.forEach(function(dim) {
     dim.scale.domain(dim.type === "number"
-        ? d3.extent(data, function(d) { console.log("nr ett: " ); return +d[dim.name]; })
-        : data.map(function(d) { console.log("nr tva: " + d[dim.name]); return d[dim.name]; }).sort());
+        ? d3.extent(data, function(d) { return +d[dim.name]; })
+        : data.map(function(d) { return d[dim.name]; }).sort());
   });
-console.log("Dimensions 2: " + dimensions[4].name);
+//console.log("Dimensions 2: " + dimensions[4].name);
   //Tooltip
   var tooltip = d3.select(div).append("div")
        .attr("class", "tooltip")
