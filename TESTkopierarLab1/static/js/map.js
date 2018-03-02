@@ -17,7 +17,7 @@ function Map(activeData, sweden_map_json){
   this.data = data;
   var slider = document.getElementById("selected_year");
   
-  var data = data2002;
+  //var data = data2002;
   var time = 0;
 
   var div = '#world-map';
@@ -117,7 +117,7 @@ function Map(activeData, sweden_map_json){
   }
 
   // pseudo function för att updatera data.
-  function updateData(dataSet){
+  function updateData(){  //dataSet as argument
     country.exit().remove();
 
     // Lyckas vi inte att konvertera den nya datan från array till json, är jag inte säker på att indexeringen d.properties.KNKOD fungerar till exempel

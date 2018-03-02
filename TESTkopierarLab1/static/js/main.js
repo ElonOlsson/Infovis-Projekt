@@ -25,9 +25,13 @@ var q=d3.queue()
 //slider.on('change', function() {
 //    draw(this.value, world_map_json);
 //});
-function updateData() {
-  var slider = document.getElementById("selected_year");
-  var datasetName = "data" + slider.value;
+function update(){
+  map.updateData();
+}
+
+//function updateData() {
+//  var slider = document.getElementById("selected_year");
+//  var datasetName = "data" + slider.value;
 
 /*  Ingenting fungerar och den skriver ut en till karta oavsett om man kör draw eller Map direkt...
 d3.queue()
@@ -41,17 +45,18 @@ d3.queue()
 
 
   //map.updateMap(map[datasetName]); 
+  /*
   console.log("hallå? (om det är 28.4 => datasettet fortfarande 2014): " + map.data[0].Year2014); 
   console.log("datasetName: " + datasetName);
   console.log("map[datasetName]: " + map[datasetName]); 
   console.log("vafan är q: " + q);
-
+  */
 
 
   //map = new Map(map[datasetName], map['sweden_map_json']);
  
     
-}
+//}
 
 // #1
 /*
