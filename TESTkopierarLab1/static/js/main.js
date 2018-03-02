@@ -6,6 +6,11 @@ function draw(activeData, data2014, data2010, data2006, data2002, pcYear, sweden
   map = new Map(data2014, data2010, data2006, data2002, pcYear, sweden_map_json);
   pc = new pc(pcYear);
   balls = new sp(data2014, data2010, data2006, data2002);
+  console.log("this is now the data: " + Object.keys(data2014[0]));
+  console.log("this is now the data: " + Object.keys(data2010[0]));
+  console.log("this is now the data: " + Object.keys(data2006[0]));
+  console.log("this is now the data: " + Object.keys(data2002[0]));
+
 
 }
 
@@ -18,6 +23,7 @@ var q=d3.queue()
     .defer(d3.json,'static/maps/sverige-topo.json')
     .await(function(error, d2014, d2010, d2006, d2002, pcYear, sweden_map_json) {
       if (error) throw error;  
+     
       draw(d2014, d2014, d2010, d2006, d2002, pcYear, sweden_map_json);
     });
 
