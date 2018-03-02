@@ -23,7 +23,7 @@
       <div class="row">
 
         <!-- Map -->
-        <div class="col-sm-6">
+        <div class="col-sm-5">
           <div class="chart-wrapper">
             <div class="chart-title">
               Map Chart
@@ -34,6 +34,24 @@
           </div>
         </div>
       
+        <!--slider-->
+        <div class="col-sm-1"  style="height: 558.6px;">
+          <div class="chart-wrapper">
+            <div class="chart-title">
+              Select Year
+            </div>
+            <div class="chart-stage"> <!--  style="height: 512.2px;"-->
+              <form id="form_slider"> <!-- style="height: 500px;"-->
+                <input type="range" orient="vertical" min=2002 max=2014 step=4 id="year" value=2014 oninput="selected_year.value = year.value" autocomplete="off" onchange="updateData()"> <!-- style="height: 500px;"-->
+                <output name="selected_year" id="selected_year" >2014</output>
+              </form>
+              <div id="world-map"></div>
+            </div>
+          </div>
+        </div>
+
+        
+
         <!-- Scatte>r plot -->
         <div class="col-sm-6">
           <div class="chart-wrapper">

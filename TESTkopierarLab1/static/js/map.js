@@ -2,17 +2,20 @@
   Created: Jan 14 2018
   Author: Kahin Akram Hassan
 */
-function map(data2014, data2010, data2006, data2002, sweden_map_json){
+function Map(activeData, sweden_map_json){
   //constructor;
-
+/*
   this.data2014 = data2014;
   this.data2010 = data2010;
   this.data2006 = data2006;
   this.data2002 = data2002;
+*/
   this.sweden_map_json = sweden_map_json;
 
   //active dataset
-  var data = data2014;
+  var data = activeData;
+  this.data = data;
+  var slider = document.getElementById("selected_year"); 
 
   var div = '#world-map';
   var parentWidth = $(div).parent().width();
@@ -31,6 +34,7 @@ function map(data2014, data2010, data2006, data2002, sweden_map_json){
  // var zoom = d3.zoom()
  //   .scaleExtent([1, 10])
  //   .on('zoom', move);
+
 
   //initialize tooltip
   var tooltip = d3.select(div).append("div")
@@ -116,10 +120,12 @@ function map(data2014, data2010, data2006, data2002, sweden_map_json){
       g.attr("transform", d3.event.transform);
   }
 
+  
   function getColorIndex(countyCode){
     var largest = 0.0;
     var counter = 0;
     var index = 0;
+    //console.log(data.length);
     for(var i = 0; i < data.length; i++)
     {
       if(data[i].region.match(/\d+/) == countyCode)
@@ -134,6 +140,7 @@ function map(data2014, data2010, data2006, data2002, sweden_map_json){
     }
     return index;
   }
+
 
     /*~~ Highlight countries when filtering in the other graphs~~*/
   this.selectCountry = function(value){

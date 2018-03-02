@@ -2,17 +2,19 @@
   Created: Jan 14 2018
   Author: Kahin Akram Hassan
 */
-function pc(data2014, data2010, data2006, data2002){
-
+function pc(data){
+  this.data = data;
+/*
   this.data2014 = data2014;
   this.data2010 = data2010;
   this.data2006 = data2006;
   this.data2002 = data2002;
-
+*/
   //active dataset 
-  var data = data2014;
+  //var data = data2014;
 
   var div = '#pc-chart';
+
 
 //En overwiev av korelationen mellan koordinaterna
   
@@ -22,14 +24,15 @@ function pc(data2014, data2010, data2006, data2002){
       height = 400 - margin.top - margin.bottom;
 
   //dimensions for the axes.
-  //Caution: Attributes in the function needs to be changed if  data file is changed
+  //Caution: Attributes in the function needs to be changed if data file is changed
   var dimensions = axesDims(height);
+console.log("Dimensions 1: " + dimensions[0].name);
   dimensions.forEach(function(dim) {
     dim.scale.domain(dim.type === "number"
-        ? d3.extent(data, function(d) { return +d[dim.name]; })
-        : data.map(function(d) { return d[dim.name]; }).sort());
+        ? d3.extent(data, function(d) { console.log("nr ett: " ); return +d[dim.name]; })
+        : data.map(function(d) { console.log("nr tva: " + d[dim.name]); return d[dim.name]; }).sort());
   });
-
+console.log("Dimensions 2: " + dimensions[4].name);
   //Tooltip
   var tooltip = d3.select(div).append("div")
        .attr("class", "tooltip")
@@ -50,9 +53,8 @@ function pc(data2014, data2010, data2006, data2002){
   /* ~~ Task 6 Scale the x axis ~~*/
   
   var x = d3.scaleBand()
-	  .domain(dimensions.map(function(d) {return d.name;}))
+	  .domain(dimensions.map(function(d) { return d.name;}))
 	  .range([0, width]);
-  
   
   /* ~~ Task 7 Add the x axes ~~*/
   var axes = svg.selectAll(".axes")
@@ -60,9 +62,6 @@ function pc(data2014, data2010, data2006, data2002){
 	  .enter().append("g")
 	  .attr("class", "dimension")
 	  .attr("transform", function(d) {return "translate(" + x(d.name) + ")";}); 
-
-	
- 
 
         axes.append("g")
           .attr("class", "axis")
@@ -78,10 +77,12 @@ function pc(data2014, data2010, data2006, data2002){
 
     //Task 8 initialize color scale
   var cc = [];
-	var color = d3.scaleOrdinal(d3.schemeCategory20);
+  var color = d3.scaleOrdinal(d3.schemeCategory20);
+  // The order of : Moderaterna, Centerpartiet, Folkpartiet, Kristdemokraterna, Miljöpartiet, Socialdemokraterna, Vänsterpartiet, Sverigedemokraterna,Fi, Övriga
+  var partyColors = ['#004b8d', '#51ba66', '#3d70a4', '#6d94bb', '#379c47', '#d82f27', '#b02327', '#e7e518', '#CC0066', '#BDC3C7'];
 	data.forEach(
-	function(d) {
-	  cc[d["Country"]] = color(d["Country"]);
+	function(d, i) {
+    cc = partyColors;
 	}
 	);	
 
@@ -98,7 +99,7 @@ function pc(data2014, data2010, data2006, data2002){
        .data(data)
        .enter().append("path")
        .attr("d", draw) // Uncomment when x axis is implemented
-	   .style("stroke", function(d) {return cc[d.Country]; });
+	   .style("stroke", function(d, i){ return cc[d.parti]; });
 	   
 	   
 
@@ -133,7 +134,7 @@ function pc(data2014, data2010, data2006, data2002){
         "style",
         "left:"+(mouse[0]+30)+
         "px;top:"+(mouse[1]+40)+"px")
-        .html(d.Country);
+        .html(d.parti);
 
       svg.classed("active", true);
 
@@ -150,8 +151,8 @@ function pc(data2014, data2010, data2006, data2002){
 
     function mouseout(d) {
       tooltip.transition()
-          .duration(500)
-          .style("opacity", 0);
+        .duration(500)
+        .style("opacity", 0);
       svg.classed("active", false);
       projection.classed("inactive", false);
     }
