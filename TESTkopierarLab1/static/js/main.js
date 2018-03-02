@@ -3,7 +3,7 @@ var map;
 
 function draw(activeData, data2014, data2010, data2006, data2002, pcYear, sweden_map_json){
   
-  map = new Map(activeData, sweden_map_json);
+  map = new Map(data2014, data2010, data2006, data2002, pcYear, sweden_map_json);
   pc = new pc(pcYear);
   balls = new sp(data2014, data2010, data2006, data2002);
 

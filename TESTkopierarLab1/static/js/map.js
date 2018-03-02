@@ -2,20 +2,19 @@
   Created: Jan 14 2018
   Author: Kahin Akram Hassan
 */
-function Map(activeData, sweden_map_json){
+function Map(data2014, data2010, data2006, data2002, pcYear, sweden_map_json){
   //constructor;
-/*
+
   this.data2014 = data2014;
   this.data2010 = data2010;
   this.data2006 = data2006;
   this.data2002 = data2002;
-*/
+
   this.sweden_map_json = sweden_map_json;
 
   //active dataset
-  var data = activeData;
+  var data = data2014;
   this.data = data;
-  var slider = document.getElementById("selected_year");
   
   //var data = data2002;
   var time = 0;
@@ -120,6 +119,31 @@ function Map(activeData, sweden_map_json){
   this.updateData = function (){  //dataSet as argument
     country.exit().remove();
     // Lyckas vi inte att konvertera den nya datan från array till json, är jag inte säker på att indexeringen d.properties.KNKOD fungerar till exempel
+
+    //change dataset with switch.
+    var sliderElement = document.getElementById("selected_year");
+    var datasetName = "data" + sliderElement.value;
+
+    switch(datasetName){
+      case "data2002":
+        data = data2002;
+        this.data = data;
+        console.log("this is now the data: " + data);
+        break;
+      case "data2006":
+        data = data2006;
+        console.log("this is now the data: " + data);
+        break;
+      case "data2010":
+        data = data2010;
+        console.log("this is now the data: " + data);
+        break;
+      case "data2014":
+        data = data2014;
+        console.log("this is now the data: " + data);
+        break;
+    }
+
     var test = 0;
     country.enter().insert("path")
     .attr("class", "region")
@@ -139,10 +163,10 @@ function Map(activeData, sweden_map_json){
     var largest = 0.0;
     var counter = 0;
     var index = 0;
-    //console.log(data.length);
+
     for(var i = 0; i < data.length; i++)
     {
-      if(data[i].region.match(/\d+/) == countyCode)
+      if(data[i].region.match(/\d+/) == countyCode)   //Object.keys(data[0])[0].match(/\d+/)
       {
         if(parseFloat(data[i][key]) > largest)
         {
