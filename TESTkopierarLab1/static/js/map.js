@@ -117,6 +117,7 @@ function Map(data2014, data2010, data2006, data2002, pcYear, sweden_map_json){
 
   // pseudo function för att updatera data.
   this.updateData = function (){  //dataSet as argument
+    var country = g.selectAll(".sverige").data(eval(countries));
     country.exit().remove();
     // Lyckas vi inte att konvertera den nya datan från array till json, är jag inte säker på att indexeringen d.properties.KNKOD fungerar till exempel
 
