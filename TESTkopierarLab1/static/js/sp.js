@@ -14,7 +14,7 @@ function sp(data){
         width = parentWidth - margin.right - margin.left,
         height = height - margin.top - margin.bottom;
 
-    var color = d3.scaleOrdinal(d3.schemeCategory20);
+    var color = d3.scaleOrdinal(d3.schemeCategory20); // partyColors
 
     var tooltip = d3.select(div).append("div")
         .attr("class", "tooltip")
@@ -36,9 +36,9 @@ function sp(data){
 	  
       x and y domain code here*/
 	
-		xScale.domain(d3.extent(data, function(d){return d[xCol]}));
-		yScale.domain(d3.extent(data, function(d){return d[yCol]}));  
-	
+    xScale.domain(d3.extent(data, function(d){return Object.keys(d)[1]}));
+    yScale.domain(d3.extent(data, function(d){return Object.keys(d)[2]}));
+        
 
     var svg = d3.select(div).append("svg")
         .attr("width", width + margin.left + margin.right)
