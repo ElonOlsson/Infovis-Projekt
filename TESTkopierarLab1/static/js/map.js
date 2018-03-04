@@ -117,6 +117,7 @@ function Map(data2014, data2010, data2006, data2002, pcYear, sweden_map_json){
 
   // pseudo function för att updatera data.
   this.updateData = function (){  //dataSet as argument
+    var country = g.selectAll(".sverige").data(eval(countries));
     country.exit().remove();
     // Lyckas vi inte att konvertera den nya datan från array till json, är jag inte säker på att indexeringen d.properties.KNKOD fungerar till exempel
 
@@ -125,22 +126,22 @@ function Map(data2014, data2010, data2006, data2002, pcYear, sweden_map_json){
       case "2002":
         data = data2002;
         this.data = data;
-        console.log("this is now the data: " + Object.keys(data[0]));
+        console.log("this is now the data: " + Object.keys(data[0])[2]);
         break;
       case "2006":
         data = data2006;
         this.data = data;
-        console.log("this is now the data: " + Object.keys(data[0]));
+        console.log("this is now the data: " + Object.keys(data[0])[2]);
         break;
       case "2010":
         data = data2010;
         this.data = data;
-        console.log("this is now the data: " + Object.keys(data[0]));
+        console.log("this is now the data: " + Object.keys(data[0])[2]);
         break;
       case "2014":
         data = data2014;
         this.data = data;
-        console.log("this is now the data: " + Object.keys(data[0]));
+        console.log("this is now the data: " + Object.keys(data[0])[2]);
         break;
     }
 
@@ -183,19 +184,8 @@ function Map(data2014, data2010, data2006, data2002, pcYear, sweden_map_json){
   // Timar också hur lång tid den tar att exekevera
   function getColorIndex(countyCode){
     var start = new Date().getTime();
-
-    var key;
-    var region;
-
-    if(     Object.keys(data[0])[2] == "Year=2014" || Object.keys(data[0])[2] == "Year=2010"){
-      key = Object.keys(data[0])[2];
-      region = Object.keys(data[0])[0];
-    }
-    else if(Object.keys(data[0])[0] == "2006" || Object.keys(data[0])[0] == "2002"){
-      key = Object.keys(data[0])[0];
-      region = Object.keys(data[0])[1];
-    }
-
+    var key = Object.keys(data[0])[2];
+    var region = Object.keys(data[0])[0];
     var largest = 0.0;
     var counter = 0;
     var index = 0;
