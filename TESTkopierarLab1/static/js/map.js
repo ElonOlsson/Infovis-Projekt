@@ -114,7 +114,7 @@ function Map(data2014, data2010, data2006, data2002, pcYear, sweden_map_json){
     .on("click",  function(d) {
     // var countryObject = [{ "Country": d.properties.name}];
     pc.selectLine(d);
-    sp.selectDots(d);
+    sp.selectedMunicipaliti(d, data);
     });
 
     muni.selectAll("path").exit().remove();
