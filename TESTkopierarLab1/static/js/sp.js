@@ -14,13 +14,17 @@ function sp(data){
         width = parentWidth - margin.right - margin.left,
         height = height - margin.top - margin.bottom;
 
-    var color = d3.scaleOrdinal(d3.schemeCategory20); // partyColors
-
+  //  var color = d3.scaleOrdinal(d3.schemeCategory20); // partyColors
+   // The order of : Moderaterna, Centerpartiet, Folkpartiet, Kristdemokraterna, Miljöpartiet, Socialdemokraterna, Vänsterpartiet, Sverigedemokraterna, Övriga
+    var color = ['#004b8d', '#51ba66', '#3d70a4', '#6d94bb', '#379c47', '#d82f27', '#b02327', '#e7e518', '#BDC3C7'];
+  
     var tooltip = d3.select(div).append("div")
         .attr("class", "tooltip")
         .style("opacity", 0);
-
-    var xScale = d3.scaleLinear().range([0, width]);
+    
+    var partys = ["M", "SD", "Övriga"];
+    
+    var xScale = d3.scaleOrdinal().domain(partys).range([0, width]);
     var yScale = d3.scaleLinear().range([height, 0]);
 
 	var xCol = "Personal_earnings";
@@ -36,16 +40,18 @@ function sp(data){
 	  
       x and y domain code here*/
 	
-    xScale.domain(d3.extent(data, function(d){return Object.keys(d)[1]}));
-    yScale.domain(d3.extent(data, function(d){return Object.keys(d)[2]}));
-        
+      //
 
+        
+   
     var svg = d3.select(div).append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
         .attr("transform","translate(" + margin.left + "," + margin.top + ")");
 
+    yScale.domain([0, 100]);
+    
         /* ~~ Task 3 Add the x and y Axis and title  ~~ */
 		//xAxis
 	svg.append("g")
