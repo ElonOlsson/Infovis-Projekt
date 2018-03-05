@@ -12,6 +12,7 @@ function sp(data){
   //  var color = d3.scaleOrdinal(d3.schemeCategory20); // partyColors
    // The order of : Moderaterna, Centerpartiet, Folkpartiet, Kristdemokraterna, Miljöpartiet, Socialdemokraterna, Vänsterpartiet, Sverigedemokraterna, Övriga
    var partyColors = ['#004b8d', '#51ba66', '#3d70a4', '#6d94bb', '#379c47', '#d82f27', '#b02327', '#e7e518', '#BDC3C7'];
+
   
     var tooltip = d3.select(div).append("div")
         .attr("class", "tooltip")
@@ -51,33 +52,48 @@ function sp(data){
         
     // append the rectangles for the bar chart
     function updateBar() {
+
+        var theYear = "y" + document.getElementById("year").value;
+        console.log("Current value: " + theYear);
+
         var index = -1;
-        var bar = svg.selectAll(".bar")
-                .data(data)
+        var bar = svg.selectAll("bar")
+        bar.exit().remove();
+        bar.data(data)
                 .enter().append("rect")
                 .attr("class", "bar")
-                .attr("x", function(d) {console.log("bar text d.value: " + d); return xScale(d.parti); })
+                .attr("x", function(d) { return xScale(d.parti); })
                 .attr("width", xScale.bandwidth())
-                .attr("y", function(d) { return yScale(d.y2014); })
-                .attr("height", function(d) { return height - yScale(d.y2014); })
+                .attr("y", function(d) { return yScale(d[theYear]); })
+                .attr("height", function(d) { return height - yScale(d[theYear]); })
                 .style("fill", function (d) { index++; return partyColors[index]; } );
+                
+        bar.append("text")
+            .attr("class", "lable")
+            .attr("x", function(d){return xScale(d.parti)})
+            .attr("y", function(d){return yScale(d[theYear])})
+            //.attr("text-anchor", "end")
+            .attr("dy", ".75em")
+            .text(function(d){return d[theYear] + "%";});
+            //.attr("x", function(d){
+            //    return Math.max(width , d[theYear]);
+    /*.attr("class","label")
+	  .attr("x", (function(d) { return xScale(d.food) + xScale.rangeBand() / 2 ; }  ))
+	  .attr("y", function(d) { return yScale(d.quantity) + 1; })
+	  .attr("dy", ".75em")
+	  .text(function(d) { return d.quantity; });  */
+            //}
+            
+        bar.selectAll(".bar").transition()
+            .duration(500)
 
-            bar.append("text")
-                .attr("class", "value")
-                .attr("x", xScale.bandwidth()/2)
-                .attr("text-anchor", "end")
-                .style('fill', 'white')
-                .text(function(d){return d[theYear] + "%";})
-                .attr("x", function(d){
-                    return Math.max(width , d[theYear]);
-                })
-
-            bar.selectAll(".bar").transition()
-                .duration(500)
-    
-            bar.exit().remove();
+        bar.exit().remove();
     }
-    
+
+    d3.select("#year")
+        .on("change", updateBar);
+
+
     updateBar();
 
 /*		
