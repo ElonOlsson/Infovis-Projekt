@@ -19,9 +19,13 @@ function sp(data){
         .style("opacity", 0);
     
     const partys = ["M", "C", "F", "KD", "MP", "S", "V", "SD", "Övriga"];
-    
+
     var xScale = d3.scaleBand().domain(partys).padding(0.3).range([0,width]);
     var yScale = d3.scaleLinear().domain([0,50]).range([height, 0]);
+    const scale = d3.scaleLinear()
+        .domain([0, 39.85])
+        .range([0, height]);
+        console.log(39.85);
    
     var svg = d3.select(div).append("svg")
         .attr("width", width + margin.left + margin.right)
@@ -48,17 +52,26 @@ function sp(data){
         .attr("class", "title")
         .attr("font-size", 26)
         .text("Röststatistik i sverige år " + document.getElementById("year").value);
-		
+        
+    function y(d) {
+        var theYear = "y" + document.getElementById("year").value;
+        return height - scale(d[theYear]);
+    }    
         
     // append the rectangles for the bar chart
     function updateBar() {
-
+        const BAR_WIDTH = 24;
+        const BAR_GAP = 2;
+        const t = d3.transition()
+        .duration(750);
         var theYear = "y" + document.getElementById("year").value;
         console.log("Current value: " + theYear);
 
         var index = -1;
-        var bar = svg.selectAll("bar")
-        bar.exit().remove();
+        var bar = svg.selectAll("rect").data(data, d => d.parti)
+        .exit().remove();
+        bar.transition(t)
+        .attr("transform", (d, i) => `translate(${i * (BAR_WIDTH + BAR_GAP)},${y(d)})`);
         bar.data(data)
                 .enter().append("rect")
                 .attr("class", "bar")
