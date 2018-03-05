@@ -55,10 +55,8 @@ function Map(data2014, data2010, data2006, data2002, pcYear, sweden_map_json){
 
   var g = svg.append("g");
   
-  
   var municipalities = topojson.feature(sweden_map_json,
     sweden_map_json.objects.sverige).features;
-
 
   function move() {
       g.style("stroke-width", 1.5 / d3.event.transform.k + "px");
