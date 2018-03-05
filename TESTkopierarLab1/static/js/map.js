@@ -25,10 +25,6 @@ function Map(data2014, data2010, data2006, data2002, pcYear, sweden_map_json){
             width = parentWidth - margin.left - margin.right,
             height = 500 - margin.top - margin.bottom;
 
-  /*~~ Task 10  initialize color variable ~~*/
-  // Don't need no shitty colorscheme no more
-  //var colorScheme = d3.scaleOrdinal(d3.schemeCategory20c);
-
   // The order of : Moderaterna, Centerpartiet, Folkpartiet, Kristdemokraterna, Miljöpartiet, Socialdemokraterna, Vänsterpartiet, Sverigedemokraterna, Övriga
   var partyColors = ['#004b8d', '#51ba66', '#3d70a4', '#6d94bb', '#379c47', '#d82f27', '#b02327', '#e7e518', '#BDC3C7'];
   
@@ -60,67 +56,17 @@ function Map(data2014, data2010, data2006, data2002, pcYear, sweden_map_json){
   var g = svg.append("g");
   
   
-  var countries = topojson.feature(sweden_map_json,
+  var municipalities = topojson.feature(sweden_map_json,
     sweden_map_json.objects.sverige).features;
 
-
-  var country = g.selectAll(".sverige").data(countries);
-
-  /*~~ Task 12  initialize color array ~~*/
-  // Dont need this initialization no more
-  /*var cc = [];
-	data.forEach(function(d){
-		
-		cc[d["region"].match(/\d+/)] = colorScheme(d["region"]);
-	
-  }); */
-  	
-  country.enter().insert("path")
-      .attr("class", "region")
-
-        /*~~ Task 11  add path variable as attr d here. ~~*/
-      .attr("d", path)
-      .attr("id", function(d) { return d.properties.KNKOD; })
-      .attr("title", function(d) { return d.properties.KNNAMN; })
-      .style("fill", function(d) { return partyColors[getColorIndex(d.properties.KNKOD)]; })    //colormapping
-	  
-      //tooltip
-      .on("mousemove", function(d) {
-        d3.select(this).style('stroke','white');
-
-        tooltip.transition()
-            .duration(200)
-            .style("opacity", .9);
-        var mouse = d3.mouse(svg.node()).map( function(d) { return parseInt(d); } );
-        tooltip
-        .attr("style", "left:"+(mouse[0]+30)+"px;top:"+(mouse[1]+30)+"px")
-        .html(d.properties.KNNAMN);
-      })
-      .on("mouseout",  function(d) {
-
-          d3.select(this).style('stroke','none');
-          tooltip.transition()
-              .duration(500)
-              .style("opacity", 0);
-      })
-      //selection
-      .on("click",  function(d) {
-			// var countryObject = [{ "Country": d.properties.name}];
-			pc.selectLine(d);
-			sp.selectDots(d);
-      });
 
   function move() {
       g.style("stroke-width", 1.5 / d3.event.transform.k + "px");
       g.attr("transform", d3.event.transform);
   }
 
-  // pseudo function för att updatera data.
   this.updateData = function (){  //dataSet as argument
-    var country = g.selectAll(".sverige").data(eval(countries));
-    country.exit().remove();
-    // Lyckas vi inte att konvertera den nya datan från array till json, är jag inte säker på att indexeringen d.properties.KNKOD fungerar till exempel
-
+    
     //change dataset with switch.
     switch(document.getElementById("selected_year").value){
       case "2002":
@@ -144,41 +90,45 @@ function Map(data2014, data2010, data2006, data2002, pcYear, sweden_map_json){
         console.log("this is now the data: " + Object.keys(data[0])[2]);
         break;
     }
-
-    var test = 0;
-    country.enter().insert("path")
+    var muni = g.selectAll(".sverige").data(municipalities);
+    muni.enter().insert("path")
     .attr("class", "region")
     .attr("d", path)
     .attr("id", function(d) { return d.properties.KNKOD; })
     .attr("title", function(d) { return d.properties.KNNAMN; })
-    .style("fill", function(d) { test+= getColorIndex(d.properties.KNKOD); return partyColors[getColorIndex(d.properties.KNKOD)]; })
-    // hoppas att funktionaliteten med "mousemove" och "mouseout" fortfarande fungerar, annars måste det kanske skickas med in här också
-          //tooltip
-          .on("mousemove", function(d) {
-            d3.select(this).style('stroke','white');
-    
-            tooltip.transition()
-                .duration(200)
-                .style("opacity", .9);
-            var mouse = d3.mouse(svg.node()).map( function(d) { return parseInt(d); } );
-            tooltip
-            .attr("style", "left:"+(mouse[0]+30)+"px;top:"+(mouse[1]+30)+"px")
-            .html(d.properties.KNNAMN);
-          })
-          .on("mouseout",  function(d) {
-    
-              d3.select(this).style('stroke','none');
-              tooltip.transition()
-                  .duration(500)
-                  .style("opacity", 0);
-          })
-          //selection
-          .on("click",  function(d) {
-          // var countryObject = [{ "Country": d.properties.name}];
-          pc.selectLine(d);
-          sp.selectDots(d);
-          });
+    .style("fill", function(d) { return partyColors[getColorIndex(d.properties.KNKOD)]; })
+          
+    //tooltip
+    .on("mousemove", function(d) {
+      d3.select(this).style('stroke','white');
+
+      tooltip.transition()
+          .duration(200)
+          .style("opacity", .9);
+      var mouse = d3.mouse(svg.node()).map( function(d) { return parseInt(d); } );
+      tooltip
+      .attr("style", "left:"+(mouse[0]+30)+"px;top:"+(mouse[1]+30)+"px")
+      .html(d.properties.KNNAMN);
+    })
+    .on("mouseout",  function(d) {
+
+        d3.select(this).style('stroke','none');
+        tooltip.transition()
+            .duration(500)
+            .style("opacity", 0);
+    })
+          
+    //selection
+    .on("click",  function(d) {
+    // var countryObject = [{ "Country": d.properties.name}];
+    pc.selectLine(d);
+    sp.selectDots(d);
+    });
+
+    muni.selectAll("path").exit().remove();
   }
+
+  this.updateData();
 
   // Denna function returnerar ett index beroende på vilket parti som är mest röstat på i en kommun
   // Timar också hur lång tid den tar att exekevera
@@ -212,7 +162,7 @@ function Map(data2014, data2010, data2006, data2002, pcYear, sweden_map_json){
     /*~~ Highlight countries when filtering in the other graphs~~*/
   this.selectCountry = function(value){
 	  
-		var country = d3.selectAll('.regionen');
+		var country = d3.selectAll('.region');
 			country.style('stroke', function(d){
 				
 				return value.every(function(v){
