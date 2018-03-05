@@ -22,9 +22,9 @@ function sp(data){
         .attr("class", "tooltip")
         .style("opacity", 0);
     
-    var partys = ["M", "SD", "Övriga"];
+    const partys = ["M", "C", "F", "KD", "MP", "S", "V", "SD", "Övriga"];
     
-    var xScale = d3.scaleOrdinal().domain(partys).range([0, width]);
+    var xScale = d3.scaleBand().domain(partys).range([0,width]);
     var yScale = d3.scaleLinear().range([height, 0]);
 
 	var xCol = "Personal_earnings";
