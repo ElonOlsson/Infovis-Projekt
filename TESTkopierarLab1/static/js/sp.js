@@ -25,32 +25,13 @@ function sp(data){
     const partys = ["M", "C", "F", "KD", "MP", "S", "V", "SD", "Övriga"];
     
     var xScale = d3.scaleBand().domain(partys).range([0,width]);
-    var yScale = d3.scaleLinear().range([height, 0]);
-
-	var xCol = "Personal_earnings";
-	var yCol = "Unemployment_rate";
-	var country = "Country";
-	var circle_size = "Household_income";
-	var circleRadius = 2;
-	
-    /* Task 2
-      Initialize 4 (x,y,country,circle-size)
-      variables and assign different data attributes from the data filter
-      Then use domain() and extent to scale the axes
-	  
-      x and y domain code here*/
-	
-      //
-
-        
+    var yScale = d3.scaleLinear().domain([0,50]).range([height, 0]);
    
     var svg = d3.select(div).append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
         .attr("transform","translate(" + margin.left + "," + margin.top + ")");
-
-    yScale.domain([0, 100]);
     
         /* ~~ Task 3 Add the x and y Axis and title  ~~ */
 		//xAxis
@@ -60,32 +41,42 @@ function sp(data){
 		.append("text")
 		.attr("transform", "translate("+ (width/2) +", " + (height + 35) + ")")
 		.style("text-anchor", "middle")
-		.text(xCol);
+		.text("Parti");
 		
 		//yAxis
 	svg.append("g")
-		//.attr("transform", "translate(0)")
+		.attr("transform", "translate(0)")
 		.call(d3.axisLeft(yScale))
 		.attr("transform", "rotate(-90)")
-		//.attr("y", 0 - margin.left)
-		//.attr("x", 0 -(height/2))
-		//.attr("dy", "1em")
+		.attr("y", 0 - margin.left)
+		.attr("x", 0 -(height/2))
+		.attr("dy", "1em")
 		.style("text-anchor", "middle")
-		.text(yCol);
+		.text("Procent röster");
 			
 		
 
         /* ~~ Task 4 Add the scatter dots. ~~ */
 	
-	var circles = svg.selectAll("dots").data(data)
+	/*var circles = svg.selectAll("dots").data(data)
 		.enter().append("circle")
 		.attr("class", "circle")		
 		.attr("class", "non_brushed")
-		.attr("cx", function(d) {return xScale(d[xCol]); })
-		.attr("cy", function(d) {return yScale(d[yCol]); })
-		.attr("r",  function(d) {return d[circle_size]/10000; })
-		.style("fill", function(d) {return color(d[country]);})
-		.style("stroke-width", 5);
+		.attr("cx", function(d) {return xScale(d["y2006"]); })
+		.attr("cy", function(d) {return yScale(d["y2002"]); })
+		.attr("r",  function(d) {return d["y2014"]/10000; })
+		.style("fill", function(d) {return color[d["parti"]];})
+        .style("stroke-width", 5); */
+        
+          // append the rectangles for the bar chart
+     var bar = svg.selectAll(".bar")
+            .data(data)
+            .enter().append("rect")
+            .attr("class", "bar")
+            .attr("x", function(d) { return xScale(d.parti); })
+            .attr("width", xScale.bandwidth())
+            .attr("y", function(d) { return yScale(d.y2014); })
+            .attr("height", function(d) { return height - yScale(d.y2014); });
 
         /* ~~ Task 5 create the brush variable and call highlightBrushedCircles() ~~ */
 		

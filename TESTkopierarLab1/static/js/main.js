@@ -1,15 +1,14 @@
 
-var map;
+var map, pc, sp;
 function draw(activeData, data2014, data2010, data2006, data2002, pcYear, sweden_map_json){
   
   map = new Map(data2014, data2010, data2006, data2002, pcYear, sweden_map_json);
   pc = new pc(pcYear);
-  balls = new sp(data2014, data2010, data2006, data2002);
+  sp = new sp(pcYear);
   console.log("this is now the data: " + Object.keys(data2014[0]));
   console.log("this is now the data: " + Object.keys(data2010[0]));
   console.log("this is now the data: " + Object.keys(data2006[0]));
   console.log("this is now the data: " + Object.keys(data2002[0]));
-
 
 }
 
