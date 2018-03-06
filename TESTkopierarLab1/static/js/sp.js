@@ -14,23 +14,17 @@ function sp(data){
         width = parentWidth - margin.right - margin.left,
         height = height - margin.top - margin.bottom;
 
-  //  var color = d3.scaleOrdinal(d3.schemeCategory20); // partyColors
-   // The order of : Moderaterna, Centerpartiet, Folkpartiet, Kristdemokraterna, Miljöpartiet, Socialdemokraterna, Vänsterpartiet, Sverigedemokraterna, Övriga
-   var partyColors = ['#004b8d', '#51ba66', '#3d70a4', '#6d94bb', '#379c47', '#d82f27', '#b02327', '#e7e518', '#BDC3C7'];
-
-  
+    // The order of : Moderaterna, Centerpartiet, Folkpartiet, Kristdemokraterna, Miljöpartiet, Socialdemokraterna, Vänsterpartiet, Sverigedemokraterna, Övriga
+    var partyColors = ['#004b8d', '#51ba66', '#3d70a4', '#6d94bb', '#379c47', '#d82f27', '#b02327', '#e7e518', '#BDC3C7'];
+ 
     var tooltip = d3.select(div).append("div")
         .attr("class", "tooltip")
         .style("opacity", 0);
     
     const partys = ["M", "C", "F", "KD", "MP", "S", "V", "SD", "Övriga"];
-
+    
     var xScale = d3.scaleBand().domain(partys).padding(0.3).range([0,width]);
     var yScale = d3.scaleLinear().domain([0,50]).range([height, 0]);
-    const scale = d3.scaleLinear()
-        .domain([0, 39.85])
-        .range([0, height]);
-        console.log(39.85);
    
     var svg = d3.select(div).append("svg")
         .attr("width", width + margin.left + margin.right)
@@ -58,33 +52,49 @@ function sp(data){
         .attr("font-size", 26)
         .text("Röststatistik i sverige år " + document.getElementById("year").value);
         
-    function y(d) {
-        var theYear = "y" + document.getElementById("year").value;
-        return height - scale(d[theYear]);
-    }    
         
     // append the rectangles for the bar chart
-    function updateBar() {
-        const BAR_WIDTH = 24;
-        const BAR_GAP = 2;
+    function updateBar(flag) {
+
+        d3.selectAll(".title").text( "Röststatistik i sverige år " + document.getElementById("year").value);
+
         const t = d3.transition()
         .duration(750);
+
         var theYear = "y" + document.getElementById("year").value;
         console.log("Current value: " + theYear);
 
         var index = -1;
         var bar = svg.selectAll("rect").data(data, d => d.parti)
         .exit().remove();
-        bar.transition(t)
-        .attr("transform", (d, i) => `translate(${i * (BAR_WIDTH + BAR_GAP)},${y(d)})`);
+        
         bar.data(data)
-                .enter().append("rect")
-                .attr("class", "bar")
-                .attr("x", function(d) { return xScale(d.parti); })
-                .attr("width", xScale.bandwidth())
-                .attr("y", function(d) { return yScale(d[theYear]); })
-                .attr("height", function(d) { return height - yScale(d[theYear]); })
-                .style("fill", function (d) { index++; return partyColors[index]; } );
+        .enter().append("rect")
+        .attr("class", "bar")
+        .attr("x", function(d) { return xScale(d.parti); })
+        .attr("width", xScale.bandwidth())
+        .attr("y", function(d) { return yScale(d[theYear]); })
+        .attr("height", function(d) { return height - yScale(d[theYear]); })
+        .style("fill", function (d) { index++; return partyColors[index]; } );
+
+        bar.append("text")
+            .attr("class", "value")
+            .attr("y", height / 2)
+            .attr("dx", margin.right) //margin right
+            .attr("dy", ".35em") //vertical align middle
+            .attr("text-anchor", "middle")
+            .text(function(d){
+                return (d[theYear]);
+            })
+
+        svg.selectAll("text")
+            .data(data)
+            .enter().append("text")
+            .text(function(d) {
+                return d[theYear];
+            })
+            .attr("x", function(d) { return xScale(d.parti); })
+            .attr("y", function(d) { return yScale(d[theYear]); })
 
     }
 
@@ -95,59 +105,41 @@ function sp(data){
     updateBar();
 
 		
-	var brush = d3.brush().on("start brush end", highlightBrushedCircles);
-	
+    this.selectedMunicipaliti = function(value, nowData) {
+      //if (value.properties.KNKOD == data) och hämta vilket årtal för att hämta från rätt dataset
 
+      var key = Object.keys(nowData[0])[2];
 
-         //highlightBrushedCircles function
-         function highlightBrushedCircles() {
-             if (d3.event.selection != null) {
-                 // revert circles to initial style
-                 circles.attr("class", "non_brushed");
-                 var brush_coords = d3.brushSelection(this);
-                 // style brushed circles
-                   circles.filter(function (){
-                            var cx = d3.select(this).attr("cx");
-                            var cy = d3.select(this).attr("cy");
-                            return isBrushed(brush_coords, cx, cy);
-                  })
-                  .attr("class", "brushed");
-                   var d_brushed =  d3.selectAll(".brushed").data();
+      var region = Object.keys(nowData[0])[0];
 
+      var counter = 0;
 
-                   /* ~~~ Call pc or/and map function to filter ~~~ */
-				   
-					//console.log(d_brushed);
-					
-					
-					//var array = [];
-					//array.push(d_brushed);
-					map.selectCountry(d_brushed);
-				   
+      var index = 0;
 
-             }
-         }//highlightBrushedCircles
-         function isBrushed(brush_coords, cx, cy) {
-              var x0 = brush_coords[0][0],
-                  x1 = brush_coords[1][0],
-                  y0 = brush_coords[0][1],
-                  y1 = brush_coords[1][1];
-             return x0 <= cx && cx <= x1 && y0 <= cy && cy <= y1;
-         }//isBrushed
+      var barChartData = [];
 
+      var theYear = "y" + document.getElementById("year").value;
 
+      for (var i = 0; i < nowData.length; i++) {
+        if (nowData[i][region].match(/\d+/) == value.properties.KNKOD) {
+          barChartData.push({
+            parti: partys[counter],
+            [theYear]: nowData[i][key]
+          });
 
-         //Select all the dots filtered
-         this.selectDots = function(value){
-			 
-				var dots = d3.selectAll('.non_brushed');
-				dots.style('stroke', function(d){
-					
-						return value.properties.name == d.Country ? "blue" : null 
-		
-				});
-				
-         };
+          ++counter;
+
+          console.log("bra data nu då eller? : " + JSON.stringify(barChartData));
+        }
+
+        if (counter == 9) break;
+      }
+
+      data = barChartData;
+
+      updateBar(false);
+    };
+    
 
 
 }//End

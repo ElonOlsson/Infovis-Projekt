@@ -5,11 +5,6 @@ function draw(activeData, data2014, data2010, data2006, data2002, pcYear, sweden
   map = new Map(data2014, data2010, data2006, data2002, pcYear, sweden_map_json);
   pc = new pc(pcYear);
   sp = new sp(pcYear);
-  console.log("this is now the data: " + Object.keys(data2014[0]));
-  console.log("this is now the data: " + Object.keys(data2010[0]));
-  console.log("this is now the data: " + Object.keys(data2006[0]));
-  console.log("this is now the data: " + Object.keys(data2002[0]));
-
 }
 
 d3.queue()
