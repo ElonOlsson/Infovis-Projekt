@@ -19,7 +19,11 @@ function sp(data){
     const partys = ["M", "C", "F", "KD", "MP", "S", "V", "SD", "Övriga"];
     
     var xScale = d3.scaleBand().domain(partys).padding(0.3).range([0,width]);
+<<<<<<< HEAD
     var yScale = d3.scaleLinear().domain([0,75]).range([height, 0]);
+=======
+    var yScale = d3.scaleLinear().domain([0,70]).range([height, 0]);
+>>>>>>> f53954de6acda06b91533e3ff95e082a12da97c8
    
     var svg = d3.select(div).append("svg")
         .attr("width", width + margin.left + margin.right)
@@ -60,7 +64,6 @@ function sp(data){
         .attr("height", function(d) { return height - yScale(d[theYear]); })
         .style("fill", function (d) { index++; return partyColors[index]; } );
         
-        
     // append the rectangles for the bar chart
     function updateBar() {
 
@@ -69,10 +72,7 @@ function sp(data){
             d3.selectAll(".title").text( "Röststatistik i sverige år " + document.getElementById("year").value);
         }
 
-        
         flag = true;
-
-
 
         const t = d3.transition()
         .duration(750);
@@ -116,15 +116,10 @@ function sp(data){
       //if (value.properties.KNKOD == data) och hämta vilket årtal för att hämta från rätt dataset
 
       var key = Object.keys(nowData[0])[2];
-
       var region = Object.keys(nowData[0])[0];
-
       var counter = 0;
-
       var index = 0;
-
       var barChartData = [];
-
       var theYear = "y" + document.getElementById("year").value;
 
       for (var i = 0; i < nowData.length; i++) {
