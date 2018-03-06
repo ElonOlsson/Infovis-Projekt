@@ -60,12 +60,26 @@ function bc(data){
         .attr("width", xScale.bandwidth())
         .attr("y", function(d) { return yScale(d[theYear]); })
         .attr("height", function(d) { return height - yScale(d[theYear]); })
-        .style("fill", function (d) { index++; return partyColors[index]; } );
+        .style("fill", function (d) { index++; return partyColors[index]; } )
+        .on("mousemove", function(d) {
+            d3.select(this).transition()
+            .duration(100).style('stroke','#B6B6B4');
+            d3.select(this).transition()
+            .duration(100).style('fill',"#6C7A89")
+        })
+        .on("mouseout",  function(d) {
+            d3.select(this).transition()
+            .duration(500).style('stroke','none');
+            d3.select(this).transition()
+            .duration(500).style('fill', function (d) { return partyColors[partys.indexOf(d.parti)];})            
+
+        });
+      
 
         bar.enter().append("text")
             .attr("class", "label")
             .text(function(d){
-                return d[theYear];
+                return d3.format(".01%")(d[theYear] / 100);
             })
             .attr("y", function(d) { return yScale(d[theYear]); })
             .attr("x", function(d) { return xScale(d.parti) ; }) //margin right
@@ -73,7 +87,7 @@ function bc(data){
             .attr("dy", "-.15em")
             .attr("text-anchor", "middle")
             .attr("dx", "2.0em")
-            .style("fill", "black")
+            .style("fill", "#B6B6B4")
             .style("font-size", "16px");
         
     // append the rectangles for the bar chart
@@ -92,6 +106,7 @@ function bc(data){
 
         d3.selectAll("rect").data(data)
         .transition()
+        //.ease(d3.easeElastic)
         .duration(750)
         .attr("class", "bar")
         .attr("x", function(d) { return xScale(d.parti); })
@@ -102,10 +117,11 @@ function bc(data){
 
         d3.selectAll(".label").data(data)
         .transition()
+        //.ease(d3.easeElastic)
         .duration(750)
         .tween("text", function(d) {
             var i = d3.interpolate(this.textContent, d[theYear]);
-            return t => this.textContent = parseFloat(i(t)).toFixed(1);
+            return t => this.textContent = d3.format("0.01%")(parseFloat(i(t)).toFixed(1)/100);
         })
 
         .attr("y", function(d) { return yScale(d[theYear]); })
