@@ -62,6 +62,20 @@ function bc(data){
         .attr("y", function(d) { return yScale(d[theYear]); })
         .attr("height", function(d) { return height - yScale(d[theYear]); })
         .style("fill", function (d) { index++; return partyColors[index]; } );
+
+        bar.enter().append("text")
+            .attr("class", "label")
+            .text(function(d){
+                return d[theYear];
+            })
+            .attr("y", function(d) { return yScale(d[theYear]); })
+            .attr("x", function(d) { return xScale(d.parti) ; }) //margin right
+            .attr("font-family", "sans-serif")
+            .attr("dy", "-.15em")
+            .attr("text-anchor", "middle")
+            .attr("dx", "2.0em")
+            .style("fill", "black")
+            .style("font-size", "16px");
         
     // append the rectangles for the bar chart
     function updateBar() {
@@ -87,24 +101,17 @@ function bc(data){
         .attr("height", function(d) { return height - yScale(d[theYear]); })
         .style("fill", function (d) { index++; return partyColors[index]; } );
 
-        bar.append("text")
-            .attr("class", "value")
-            .attr("y", height / 2)
-            .attr("dx", margin.right) //margin right
-            .attr("dy", ".35em") //vertical align middle
-            .attr("text-anchor", "middle")
-            .text(function(d){
-                return (d[theYear]);
-            })
+        d3.selectAll(".label").data(data)
+        .transition()
+        .duration(750)
+        .tween("text", function(d) {
+            var i = d3.interpolate(this.textContent, d[theYear]);
+            return t => this.textContent = parseFloat(i(t)).toFixed(1);
+        })
 
-        svg.selectAll("text")
-            .data(data)
-            .enter().append("text")
-            .text(function(d) {
-                return d[theYear];
-            })
-            .attr("x", function(d) { return xScale(d.parti); })
-            .attr("y", function(d) { return yScale(d[theYear]); })
+        .attr("y", function(d) { return yScale(d[theYear]); })
+        .attr("x", function(d) { return xScale(d.parti) ; }) //margin right
+        
 
     }
 
