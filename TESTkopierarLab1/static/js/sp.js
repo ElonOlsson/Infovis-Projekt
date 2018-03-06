@@ -66,7 +66,7 @@ function sp(data){
 
         var index = -1;
 
-        var bar = svg.selectAll("rect").data(dataObject, d => d.parti)                          //här,
+        var bar = svg.selectAll("rect").data(dataObject, d => d.parti)                          //definitivt här,
         .exit().remove();
         bar.transition(t)
         .attr("transform", (d, i) => `translate(${i * (BAR_WIDTH + BAR_GAP)},${y(d)})`);        //eventuellt här,
@@ -109,19 +109,18 @@ function sp(data){
     function reformDataToObject(currentData){   //this is for whole sweden, using the pcYear.csv 
         // Moderaterna, Centerpartiet, Folkpartiet, Kristdemokraterna, Miljöpartiet, Socialdemokraterna, Vänsterpartiet, Sverigedemokraterna, Övriga
         var theYear = "y" + document.getElementById("year").value;
-        console.log("\n type of skit: " + currentData[0][theYear]);       
-        var newData = {
-            "parti": document.getElementById("year").value, 
-            "M": currentData[0][theYear], 
-            "C": currentData[1][theYear],
-            "F": currentData[2][theYear],
-            "KD": currentData[3][theYear],
-            "MP": currentData[4][theYear],
-            "S": currentData[5][theYear],
-            "V": currentData[6][theYear],
-            "SD": currentData[7][theYear],
-            "Övriga": currentData[8][theYear]
-        };
+        var newData = [
+            {"parti": "M", theYear: currentData[0][theYear]}, 
+            {"parti": "C", theYear: currentData[1][theYear]},
+            {"parti": "F", theYear: currentData[2][theYear]},
+            {"parti": "KD", theYear: currentData[3][theYear]},
+            {"parti": "MP", theYear: currentData[4][theYear]},
+            {"parti": "S", theYear: currentData[5][theYear]},
+            {"parti": "V", theYear: currentData[6][theYear]},
+            {"parti": "SD", theYear: currentData[7][theYear]},
+            {"parti": "Övriga", theYear: currentData[8][theYear]}
+        ];
+        console.log("vad i hög?! : " + JSON.stringify(newData[0]));
         return newData;
     }
 
@@ -137,37 +136,19 @@ function sp(data){
         var region = Object.keys(nowData[0])[0];
         var counter = 0;
         var index = 0;
-        var barChartData;
+        var barChartData=[];
+        var theYear = "y" + document.getElementById("year").value;
+
         for(var i = 0; i < nowData.length; i++){
             if(nowData[i][region].match(/\d+/) == value.properties.KNKOD ){
-                barChartData = {
-                    "parti": document.getElementById("year").value, 
-                    "M": nowData[i][key], 
-                    "C": nowData[i+1][key],
-                    "F": nowData[i+2][key],
-                    "KD": nowData[i+3][key],
-                    "MP": nowData[i+4][key],
-                    "S": nowData[i+5][key],
-                    "V": nowData[i+6][key],
-                    "SD": nowData[i+7][key],
-                    "Övriga": nowData[i+8][key]
-                }; 
-                ++counter;
-             
-                console.log("bra data nu då eller? ÅR: " + barChartData.parti);
-                console.log("bra data nu då eller? M: " + barChartData.M);
-                console.log("bra data nu då eller? C: " + barChartData.C);
-                console.log("bra data nu då eller? F: " + barChartData.F);  
-                console.log("bra data nu då eller? KD: " + barChartData.KD);
-                console.log("bra data nu då eller? MP: " + barChartData.MP);
-                console.log("bra data nu då eller? S: " + barChartData.S);
-                console.log("bra data nu då eller? V: " + barChartData.V);
-                console.log("bra data nu då eller? SD: " + barChartData.SD);
-                console.log("bra data nu då eller? Övriga: " + barChartData.Övriga);
-
                 
-                break;    
+                barChartData.push({"parti": partys[counter], [theYear]: nowData[i][key]}); 
+                    
+                ++counter;
+
+                console.log("bra data nu då eller? : " + JSON.stringify(barChartData));
             }
+            if(counter==9) break;  
         }    
 
         updateBar(barChartData);
