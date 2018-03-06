@@ -57,38 +57,41 @@ function Map(data2014, data2010, data2006, data2002, pcYear, sweden_map_json){
       g.attr("transform", d3.event.transform);
   }
 
+  var muni = g.selectAll(".sverige").data(municipalities);
+  muni.enter().insert("path")
+  .attr("class", "region")
+  .attr("d", path)
+  .attr("id", function(d) { return d.properties.KNKOD; })
+  .attr("title", function(d) { return d.properties.KNNAMN; })
+  .style("fill", function(d) { return partyColors[getColorIndex(d.properties.KNKOD)]; })
+
   this.updateData = function (){  //dataSet as argument
-    
     //change dataset with switch.
     switch(document.getElementById("selected_year").value){
       case "2002":
         data = data2002;
         this.data = data;
-        console.log("this is now the data: " + Object.keys(data[0])[2]);
         break;
       case "2006":
         data = data2006;
         this.data = data;
-        console.log("this is now the data: " + Object.keys(data[0])[2]);
         break;
       case "2010":
         data = data2010;
         this.data = data;
-        console.log("this is now the data: " + Object.keys(data[0])[2]);
         break;
       case "2014":
         data = data2014;
         this.data = data;
-        console.log("this is now the data: " + Object.keys(data[0])[2]);
         break;
     }
-    var muni = g.selectAll(".sverige").data(municipalities);
-    muni.enter().insert("path")
+
+    d3.selectAll("path").data(municipalities)
     .attr("class", "region")
-    .attr("d", path)
-    .attr("id", function(d) { return d.properties.KNKOD; })
-    .attr("title", function(d) { return d.properties.KNNAMN; })
-    .style("fill", function(d) { return partyColors[getColorIndex(d.properties.KNKOD)]; })
+  .attr("d", path)
+  .attr("id", function(d) { return d.properties.KNKOD; })
+  .attr("title", function(d) { return d.properties.KNNAMN; })
+  .style("fill", function(d) { return partyColors[getColorIndex(d.properties.KNKOD)]; })
           
     //tooltip
     .on("mousemove", function(d) {
@@ -112,9 +115,8 @@ function Map(data2014, data2010, data2006, data2002, pcYear, sweden_map_json){
           
     //selection
     .on("click",  function(d) {
-    // var countryObject = [{ "Country": d.properties.name}];
-    pc.selectLine(d);
-    sp.selectedMunicipaliti(d, data);
+
+    sp.selectedMunicipaliti(d,data);
     });
 
     muni.selectAll("path").exit().remove();
