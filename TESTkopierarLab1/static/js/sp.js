@@ -19,11 +19,7 @@ function sp(data){
     const partys = ["M", "C", "F", "KD", "MP", "S", "V", "SD", "Övriga"];
     
     var xScale = d3.scaleBand().domain(partys).padding(0.3).range([0,width]);
-<<<<<<< HEAD
-    var yScale = d3.scaleLinear().domain([0,75]).range([height, 0]);
-=======
     var yScale = d3.scaleLinear().domain([0,70]).range([height, 0]);
->>>>>>> f53954de6acda06b91533e3ff95e082a12da97c8
    
     var svg = d3.select(div).append("svg")
         .attr("width", width + margin.left + margin.right)
