@@ -1,6 +1,7 @@
 function sp(data){
-
+    var pcYEAR = data;
     this.data = data;
+    var flag = true;
     var div = '#scatter-plot';
     var height = 500;
     var parentWidth = $(div).parent().width();
@@ -45,25 +46,36 @@ function sp(data){
         .attr("class", "title")
         .attr("font-size", 26)
         .text("Röststatistik i sverige år " + document.getElementById("year").value);
+
+        var bar = svg.selectAll("rect").data(data, d => d.parti)                          //här,
+        var theYear = "y" + document.getElementById("year").value;
+        var index = -1;
         
+        bar.data(data)
+        .enter().append("rect")
+        .attr("class", "bar")
+        .attr("x", function(d) { return xScale(d.parti); })
+        .attr("width", xScale.bandwidth())
+        .attr("y", function(d) { return yScale(d[theYear]); })
+        .attr("height", function(d) { return height - yScale(d[theYear]); })
+        .style("fill", function (d) { index++; return partyColors[index]; } );
         
     // append the rectangles for the bar chart
     function updateBar() {
 
-        d3.selectAll(".title").text( "Röststatistik i sverige år " + document.getElementById("year").value);
+        if(flag){
+            data = pcYEAR;
+            d3.selectAll(".title").text( "Röststatistik i sverige år " + document.getElementById("year").value);
+        }
 
-        const t = d3.transition()
-        .duration(750);
-
-        var theYear = "y" + document.getElementById("year").value;
+        flag = true;
+        theYear = "y" + document.getElementById("year").value;
 
         var index = -1;
 
-        var bar = svg.selectAll("rect").data(data, d => d.parti)                          //här,
-        .exit().remove();
-        
-        bar.data(data)
-        .enter().append("rect")
+        d3.selectAll("rect").data(data)
+        .transition()
+        .duration(750)
         .attr("class", "bar")
         .attr("x", function(d) { return xScale(d.parti); })
         .attr("width", xScale.bandwidth())
@@ -92,8 +104,6 @@ function sp(data){
 
     }
 
-    updateBar();
-    
     d3.select("#year")
         .on("change", updateBar);
 		
@@ -119,9 +129,9 @@ function sp(data){
 
         if (counter == 9) break;
       }
-
+      flag = false;
       data = barChartData;
-
+      d3.selectAll(".title").text( "Röststatistik i " + value.properties.KNNAMN + " år " + document.getElementById("year").value);
       updateBar();
     };
     
