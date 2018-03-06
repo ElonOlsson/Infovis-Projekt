@@ -18,7 +18,7 @@ function sp(data){
     const partys = ["M", "C", "F", "KD", "MP", "S", "V", "SD", "Övriga"];
     
     var xScale = d3.scaleBand().domain(partys).padding(0.3).range([0,width]);
-    var yScale = d3.scaleLinear().domain([0,50]).range([height, 0]);
+    var yScale = d3.scaleLinear().domain([0,70]).range([height, 0]);
    
     var svg = d3.select(div).append("svg")
         .attr("width", width + margin.left + margin.right)
@@ -115,8 +115,6 @@ function sp(data){
           });
 
           ++counter;
-
-          console.log("bra data nu då eller? : " + JSON.stringify(barChartData));
         }
 
         if (counter == 9) break;
