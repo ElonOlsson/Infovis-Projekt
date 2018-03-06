@@ -1,13 +1,7 @@
-/*
-  Created: Jan 14 2018
-  Author: Kahin Akram Hassan
-*/
-
 function sp(data){
 
     this.data = data;
     var div = '#scatter-plot';
-
     var height = 500;
     var parentWidth = $(div).parent().width();
     var margin = {top: 20, right: 20, bottom: 60, left: 40},
@@ -31,7 +25,7 @@ function sp(data){
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
         .attr("transform","translate(" + margin.left + "," + margin.top + ")");
-
+    
 		//xAxis
 	svg.append("g")
 		.attr("transform", "translate(0, " + height +")")
@@ -54,7 +48,7 @@ function sp(data){
         
         
     // append the rectangles for the bar chart
-    function updateBar(flag) {
+    function updateBar() {
 
         d3.selectAll(".title").text( "Röststatistik i sverige år " + document.getElementById("year").value);
 
@@ -62,10 +56,10 @@ function sp(data){
         .duration(750);
 
         var theYear = "y" + document.getElementById("year").value;
-        console.log("Current value: " + theYear);
 
         var index = -1;
-        var bar = svg.selectAll("rect").data(data, d => d.parti)
+
+        var bar = svg.selectAll("rect").data(data, d => d.parti)                          //här,
         .exit().remove();
         
         bar.data(data)
@@ -97,13 +91,9 @@ function sp(data){
             .attr("y", function(d) { return yScale(d[theYear]); })
 
     }
-
+    updateBar();
     d3.select("#year")
         .on("change", updateBar);
-
-
-    updateBar();
-
 		
     this.selectedMunicipaliti = function(value, nowData) {
       //if (value.properties.KNKOD == data) och hämta vilket årtal för att hämta från rätt dataset

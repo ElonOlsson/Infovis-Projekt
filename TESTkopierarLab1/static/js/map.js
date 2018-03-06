@@ -1,7 +1,3 @@
-/*
-  Created: Jan 14 2018
-  Author: Kahin Akram Hassan
-*/
 function Map(data2014, data2010, data2006, data2002, pcYear, sweden_map_json){
   //constructor;
 
@@ -39,8 +35,6 @@ function Map(data2014, data2010, data2006, data2002, pcYear, sweden_map_json){
       .attr("class", "tooltip")
       .style("opacity", 0);
 
-
-  /*~~ Task 11  initialize projection and path variable ~~*/
   var projection = d3.geoMercator()
 	 .scale(950)
 	 .translate([width *-0.1, height * 3.2]);
