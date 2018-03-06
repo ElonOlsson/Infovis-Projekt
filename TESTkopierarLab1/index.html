@@ -39,8 +39,13 @@
               Select Year
             </div>
             <div class="chart-stage"> <!--  style="height: 512.2px;"-->
-              <form id="form_slider"> <!-- style="height: 500px;"-->
-                <input type="range" orient="vertical" min=2002 max=2014 step=4 id="year" value=2014 oninput="selected_year.value = year.value" autocomplete="off" onchange="update()"> <!-- style="height: 500px;"-->
+              <form id="form"> <!-- style="height: 500px;"-->
+              <input type="range" orient="vertical" min=2002 max=2014 step=4 id="year" value=2014 oninput="selected_year.value = year.value" autocomplete="off" onchange="update()"> <!-- style="height: 500px;"-->
+              <!--  <input type="radio" oninput="selected_year.value = year.value" name="year" value=2014 onclick="update()" checked>2014<br>
+                <input type="radio" oninput="selected_year.value = year.value" name="year" value=2010 onclick="update()">2010<br>
+                <input type="radio" oninput="selected_year.value = year.value" name="year" value=2006 onclick="update()">2006<br>
+                <input type="radio" oninput="selected_year.value = year.value" name="year" value=2002 onclick="update()">2002<br> -->
+
                 <output name="selected_year" id="selected_year" >2014</output>
               </form>
             </div>

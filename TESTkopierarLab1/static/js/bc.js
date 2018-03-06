@@ -42,9 +42,8 @@ function bc(data){
         .call(d3.axisLeft(yScale));
 
         //title
-    svg.append("g")
+    svg.append("text")
         .attr("class", "title")
-        .append("text")
         .attr("transform","translate(" + width/2 +" , 10)")
         .attr("font-size", 18)
 		.style("text-anchor", "middle")
@@ -82,7 +81,7 @@ function bc(data){
 
         if(flag){
             data = pcYEAR;
-            d3.select("g").selectAll(".title").text( "Röststatistik i sverige år " + document.getElementById("year").value);
+            d3.selectAll(".title").text( "Röststatistik i sverige år " + document.getElementById("year").value);
 
         }
 
@@ -115,8 +114,8 @@ function bc(data){
 
     }
 
-    d3.select("#year")
-        .on("change", updateBar);
+    d3.selectAll("input")
+        .on("click", updateBar);
 		
     this.selectedMunicipaliti = function(value, nowData) {
       //if (value.properties.KNKOD == data) och hämta vilket årtal för att hämta från rätt dataset
@@ -142,7 +141,7 @@ function bc(data){
       }
       flag = false;
       data = barChartData;
-      d3.select("g").selectAll(".title").text( "Röststatistik i " + value.properties.KNNAMN + " år " + document.getElementById("year").value);
+      d3.selectAll(".title").text( "Röststatistik i " + value.properties.KNNAMN + " år " + document.getElementById("year").value);
       updateBar();
     };
     
