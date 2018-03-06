@@ -69,14 +69,13 @@ function sp(data){
         }
 
         flag = true;
-
-        const t = d3.transition()
-        .duration(750);
         theYear = "y" + document.getElementById("year").value;
 
         var index = -1;
 
         d3.selectAll("rect").data(data)
+        .transition()
+        .duration(750)
         .attr("class", "bar")
         .attr("x", function(d) { return xScale(d.parti); })
         .attr("width", xScale.bandwidth())
