@@ -96,6 +96,7 @@ function Map(data2014, data2010, data2006, data2002, pcYear, sweden_map_json){
     //tooltip
     .on("mousemove", function(d) {
       d3.select(this).style('stroke','white');
+      d3.select(this).style('opacity','0.7');
 
       tooltip.transition()
           .duration(200)
@@ -108,6 +109,7 @@ function Map(data2014, data2010, data2006, data2002, pcYear, sweden_map_json){
     .on("mouseout",  function(d) {
 
         d3.select(this).style('stroke','none');
+        d3.select(this).style('opacity','1.0');
         tooltip.transition()
             .duration(500)
             .style("opacity", 0);

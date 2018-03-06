@@ -63,13 +63,13 @@ function sp(data){
             d3.select(this).transition()
             .duration(100).style('stroke','#B6B6B4');
             d3.select(this).transition()
-            .duration(100).style('fill',"#6C7A89")
+            .duration(100).style('opacity',"0.7")
         })
         .on("mouseout",  function(d) {
             d3.select(this).transition()
             .duration(500).style('stroke','none');
             d3.select(this).transition()
-            .duration(500).style('fill', function (d) { return partyColors[partys.indexOf(d.parti)];})            
+            .duration(500).style('opacity', "1.0")            
 
         });
       
