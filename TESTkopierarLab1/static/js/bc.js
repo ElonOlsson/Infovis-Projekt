@@ -1,8 +1,8 @@
-function sp(data){
+function bc(data){
     var pcYEAR = data;
     this.data = data;
     var flag = true;
-    var div = '#scatter-plot';
+    var div = '#barchart';
     var height = 500;
     var parentWidth = $(div).parent().width();
     var margin = {top: 20, right: 20, bottom: 60, left: 40},
@@ -41,10 +41,12 @@ function sp(data){
 		.attr("class", "y axis")
         .call(d3.axisLeft(yScale));
 
+        //title
     svg.append("text")
-        .attr("transform","translate(" + width/4 +" , 10)")
         .attr("class", "title")
-        .attr("font-size", 26)
+        .attr("transform","translate(" + width/2 +" , 10)")
+        .attr("font-size", 18)
+		.style("text-anchor", "middle")
         .text("Röststatistik i sverige år " + document.getElementById("year").value);
 
         var bar = svg.selectAll("rect").data(data, d => d.parti)                          //här,
@@ -94,6 +96,7 @@ function sp(data){
         if(flag){
             data = pcYEAR;
             d3.selectAll(".title").text( "Röststatistik i sverige år " + document.getElementById("year").value);
+
         }
 
         flag = true;
@@ -127,8 +130,8 @@ function sp(data){
 
     }
 
-    d3.select("#year")
-        .on("change", updateBar);
+    d3.selectAll("input")
+        .on("click", updateBar);
 		
     this.selectedMunicipaliti = function(value, nowData) {
       //if (value.properties.KNKOD == data) och hämta vilket årtal för att hämta från rätt dataset

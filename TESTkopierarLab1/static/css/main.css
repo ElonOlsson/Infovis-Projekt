@@ -1,3 +1,29 @@
+#selected_year{
+  text-align: center;
+}
+
+.chart-title{
+  text-align: center;
+}
+
+body.application{
+  background-color: rgb(246, 246, 246);
+}
+
+.navbar-inverse{
+  background-color: rgb(246, 246, 246);
+}
+
+.navbar {
+  border: none;
+}
+
+.chart-wrapper{
+  border: 3px solid #eeeefe;
+  border-radius: 3px;
+}
+
+
 
 .background path {
   fill: none;
