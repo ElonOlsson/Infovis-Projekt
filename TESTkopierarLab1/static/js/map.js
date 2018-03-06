@@ -15,7 +15,7 @@ function Map(data2014, data2010, data2006, data2002, pcYear, sweden_map_json){
   //var data = data2002;
   var time = 0;
 
-  var div = '#world-map';
+  var div = '#map';
   var parentWidth = $(div).parent().width();
   var margin = {top: 0, right: 0, bottom: 0, left: 0},
             width = parentWidth - margin.left - margin.right,
@@ -36,7 +36,7 @@ function Map(data2014, data2010, data2006, data2002, pcYear, sweden_map_json){
       .style("opacity", 0);
 
   var projection = d3.geoMercator()
-	 .scale(950)
+	 .scale(945)
 	 .translate([width *-0.1, height * 3.2]);
 	 
   var path = d3.geoPath()
@@ -116,7 +116,7 @@ function Map(data2014, data2010, data2006, data2002, pcYear, sweden_map_json){
     //selection
     .on("click",  function(d) {
 
-    sp.selectedMunicipaliti(d,data);
+    bc.selectedMunicipaliti(d,data);
     });
 
     muni.selectAll("path").exit().remove();

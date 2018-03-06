@@ -1,10 +1,10 @@
 
-var map, pc, sp;
+var map, pc, bc;
 function draw(activeData, data2014, data2010, data2006, data2002, pcYear, sweden_map_json){
   
   map = new Map(data2014, data2010, data2006, data2002, pcYear, sweden_map_json);
   pc = new pc(pcYear);
-  sp = new sp(pcYear);
+  bc = new bc(pcYear);
 }
 
 d3.queue()
