@@ -14,6 +14,7 @@ function Map(data2014, data2010, data2006, data2002, pcYear, sweden_map_json){
   
   //var data = data2002;
   var time = 0;
+  var oldTime = 0;
 
   var div = '#map';
   var parentWidth = $(div).parent().width();
@@ -121,7 +122,10 @@ function Map(data2014, data2010, data2006, data2002, pcYear, sweden_map_json){
     bc.selectedMunicipaliti(d,data);
     });
 
-    muni.selectAll("path").exit().remove();
+    //muni.selectAll("path").exit().remove();
+    console.log('Execution time: ' + (time - oldTime));
+    oldTime = time;
+    
   }
 
   this.updateData();
