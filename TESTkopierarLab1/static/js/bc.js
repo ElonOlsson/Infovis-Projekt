@@ -95,7 +95,7 @@ function bc(data){
 
         if(flag){
             data = pcYEAR;
-            d3.selectAll(".title").text( "Röststatistik i sverige år " + document.getElementById("year").value);
+            d3.selectAll(".title").text( "Röststatistik i Sverige år " + document.getElementById("year").value);
 
         }
 
@@ -130,7 +130,7 @@ function bc(data){
 
     }
 
-    d3.selectAll("input")
+    d3.select("#year")
         .on("click", updateBar);
 		
     this.selectedMunicipaliti = function(value, nowData) {
