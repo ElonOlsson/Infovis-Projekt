@@ -19,7 +19,7 @@ function bc(data){
     const partys = ["M", "C", "F", "KD", "MP", "S", "V", "SD", "Övriga"];
     
     var xScale = d3.scaleBand().domain(partys).padding(0.3).range([0,width]);
-    var yScale = d3.scaleLinear().domain([0,70]).range([height, 0]);
+    var yScale = d3.scaleLinear().domain([0,65]).range([height, 0]);
    
     var svg = d3.select(div).append("svg")
         .attr("width", width + margin.left + margin.right)
@@ -86,7 +86,10 @@ function bc(data){
             .attr("font-family", "sans-serif")
             .attr("dy", "-.15em")
             .attr("text-anchor", "middle")
-            .attr("dx", "2.0em")
+            .attr("dx", function(d) {
+                console.log(xScale.bandwidth());
+                return ((xScale.bandwidth()) + 3)/ 2;
+            })
             .style("fill", "#B6B6B4")
             .style("font-size", "16px");
         

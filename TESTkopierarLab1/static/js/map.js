@@ -173,6 +173,5 @@ function Map(data2014, data2010, data2006, data2002, pcYear, sweden_map_json){
 		});
 
   }
-  console.log('Execution time: ' + time);
 
 }
